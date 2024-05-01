@@ -1,5 +1,5 @@
 import { AdminApiClient, createAdminApiClient } from "@shopify/admin-api-client"
-import { createStorefrontApiClient, StorefrontApiClient } from "@shopify/storefront-api-client"
+import { StorefrontApiClient, createStorefrontApiClient } from "@shopify/storefront-api-client"
 
 import { createCartItemMutation, createCartMutation, deleteCartItemsMutation, updateCartItemsMutation } from "./mutations/cart.storefront"
 import { createAccessTokenMutation, createCustomerMutation, updateCustomerMutation } from "./mutations/customer.storefront"
@@ -15,6 +15,18 @@ import { getLatestProductFeedQuery } from "./queries/product-feed.admin"
 import { getAdminProductQuery, getProductStatusQuery } from "./queries/product.admin"
 import { getProductQuery, getProductsByHandleQuery } from "./queries/product.storefront"
 
+import {
+  PlatformAccessToken,
+  PlatformCart,
+  PlatformCollection,
+  PlatformItemInput,
+  PlatformMenu,
+  PlatformPage,
+  PlatformProduct,
+  PlatformProductStatus,
+  PlatformUser,
+  PlatformUserCreateInput,
+} from "../types"
 import type {
   LatestProductFeedsQuery,
   ProductFeedCreateMutation,
@@ -43,18 +55,6 @@ import type {
   UpdateCustomerMutation,
 } from "./types/storefront.generated"
 import { CurrencyCode } from "./types/storefront.types"
-import {
-  PlatformAccessToken,
-  PlatformCart,
-  PlatformCollection,
-  PlatformItemInput,
-  PlatformMenu,
-  PlatformPage,
-  PlatformProduct,
-  PlatformProductStatus,
-  PlatformUser,
-  PlatformUserCreateInput,
-} from "../types"
 
 interface CreateShopifyClientProps {
   storeDomain: string
@@ -65,7 +65,7 @@ interface CreateShopifyClientProps {
 export function createShopifyClient({ storefrontAccessToken, adminAccessToken, storeDomain }: CreateShopifyClientProps) {
   const client = createStorefrontApiClient({
     storeDomain,
-    privateAccessToken: storefrontAccessToken || "_BOGUS_TOKEN_",
+    publicAccessToken: storefrontAccessToken || "_BOGUS_TOKEN_",
     apiVersion: "2024-01",
     customFetchApi: (url, init) => fetch(url, init as never) as never,
   })

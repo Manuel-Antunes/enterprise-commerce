@@ -1,23 +1,22 @@
 import "./globals.css"
 
+import { CallToAction } from "components/CallToAction/CallToAction"
+import { Footer } from "components/Footer/Footer"
+import { Modals } from "components/Modals/Modals"
+import { NavigationBar } from "components/NavigationBar/NavigationBar"
+import { mobileInlineScript } from "components/NavigationBar/mobileInlineScript"
+import { NavItem } from "components/NavigationBar/types"
+import { TopBar } from "components/TopBar/TopBar"
+import { env } from "env.mjs"
+import { Metadata } from "next"
 import nextDynamic from "next/dynamic"
 import Script from "next/script"
 import { Suspense } from "react"
 import { Toaster } from "sonner"
-import { CallToAction } from "components/CallToAction/CallToAction"
-import { Footer } from "components/Footer/Footer"
-import { Modals } from "components/Modals/Modals"
-import { mobileInlineScript } from "components/NavigationBar/mobileInlineScript"
-import { NavigationBar } from "components/NavigationBar/NavigationBar"
-import { NavItem } from "components/NavigationBar/types"
-import { TopBar } from "components/TopBar/TopBar"
+import { CartView } from "views/Cart/CartView"
+import { DemoModeAlert } from "views/DemoModeAlert"
 import { FlagValues } from "views/FlagValues"
 import { ThirdParties } from "views/ThirdParties"
-import { env } from "env.mjs"
-import { Metadata } from "next"
-import { GithubBadge } from "views/GithubBadge"
-import { DemoModeAlert } from "views/DemoModeAlert"
-import { CartView } from "views/Cart/CartView"
 
 const DraftToolbar = nextDynamic(() => import("views/DraftToolbar"), { ssr: false })
 
@@ -210,7 +209,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThirdParties />
         </Suspense>
 
-        <GithubBadge />
+        {/* <GithubBadge /> */}
         <DemoModeAlert />
       </body>
     </html>

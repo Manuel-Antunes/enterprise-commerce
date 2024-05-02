@@ -14,7 +14,6 @@ export function ProductCard(props: ProductCardProps) {
   const variant = props.variants?.find(Boolean)?.price
   const href = `/products/${props.handle}`
   const linkAria = `Visit product: ${props.title}`
-  console.log(props)
   const featuredImageAltTag = props.images?.find((singleImage) => singleImage?.url === props.featuredImage?.url)?.altText || ""
 
   return (

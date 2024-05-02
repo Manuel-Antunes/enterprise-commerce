@@ -16,14 +16,12 @@ export async function POST(req: Request) {
   }
 
   const rawPayload = await req.text()
-
+  
   if (!isWebhookVerified(rawPayload, hmac!)) {
     return new Response(JSON.stringify({ message: "Could not verify request." }), { status: 401, headers: { "Content-Type": "application/json" } })
   }
 
   const { product, metadata } = JSON.parse(rawPayload) as Root
-
-  console.log(rawPayload)
 
   let index = await getMeilisearchIndex(MEILISEARCH_INDEX)
 
@@ -96,11 +94,12 @@ function isWebhookVerified(rawBody: string, hmac: string) {
 }
 
 async function generateProductAltTags(product: PlatformProduct) {
-  const altTagAwareImages = await Promise.all(product?.images?.slice(0, 1).map(mapper).filter(Boolean))
-  return [...altTagAwareImages, ...product?.images?.slice(1)?.filter(Boolean)] || []
+  const images = product?.images
+  const altTagAwareImages = await Promise.all(images.slice(0, 1).map(mapper).filter(Boolean))
+  return [...altTagAwareImages, ...images.slice(1)?.filter(Boolean)] || []
 
   async function mapper(image: PlatformImage) {
-    if (!replicate) return
+    if (!replicate) return image
     const output = (await replicate.run("salesforce/blip:2e1dddc8621f72155f24cf2e0adbde548458d3cab9f00c0139eea840d0ac4746", {
       input: {
         task: "image_captioning",

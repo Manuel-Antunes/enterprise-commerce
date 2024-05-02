@@ -1,19 +1,19 @@
-import { type ReactNode, Suspense } from "react"
 import { PlatformCollection, PlatformProduct } from "@enterprise-commerce/core/platform/types"
+import { meilisearch } from "clients/meilisearch"
 import { unstable_cache } from "next/cache"
 import { createSearchParamsCache, parseAsArrayOf, parseAsInteger, parseAsString } from "nuqs/server"
-import { meilisearch } from "clients/meilisearch"
+import { Suspense, type ReactNode } from "react"
 
 import { MEILISEARCH_INDEX } from "constants/index"
+import { SearchParamsType } from "types"
+import { getDemoProducts, isDemoMode } from "utils/demoUtils"
 import { ComparisonOperators, FilterBuilder } from "utils/filterBuilder"
-import { composeFilters } from "views/Listing/composeFilters"
 import { FacetsDesktop } from "views/Listing/FacetsDesktop"
 import { FacetsMobile } from "views/Listing/FacetsMobile"
 import { HitsSection } from "views/Listing/HitsSection"
 import { PaginationSection } from "views/Listing/PaginationSection"
 import { Sorter } from "views/Listing/Sorter"
-import { getDemoProducts, isDemoMode } from "utils/demoUtils"
-import { SearchParamsType } from "types"
+import { composeFilters } from "views/Listing/composeFilters"
 
 interface SearchViewProps {
   searchParams: SearchParamsType
@@ -94,7 +94,6 @@ const searchProducts = unstable_cache(
     const totalPages = results?.totalPages || 0
     const facetDistribution = results?.facetDistribution || {}
     const totalHits = results.totalHits
-
     return { hits, totalPages, facetDistribution, totalHits }
   },
   ["products-search"],

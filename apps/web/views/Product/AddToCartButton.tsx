@@ -3,13 +3,13 @@
 import { PlatformVariant } from "@enterprise-commerce/core/platform/types"
 import { addCartItem, getItemAvailability } from "app/actions/cart.actions"
 import { Button } from "components/Button/Button"
+import { COOKIE_CART_ID } from "constants/index"
 import { useEffect, useState, useTransition } from "react"
+import { toast } from "sonner"
 import { useCartStore } from "stores/cartStore"
 import { cn } from "utils/cn"
 import { getCookie } from "utils/getCookie"
 import { Combination } from "utils/productOptionsUtils"
-import { COOKIE_CART_ID } from "constants/index"
-import { toast } from "sonner"
 
 export function AddToCartButton({ className, combination }: { className?: string; combination: Combination | PlatformVariant | undefined }) {
   const [isPending, startTransition] = useTransition()
@@ -44,7 +44,9 @@ export function AddToCartButton({ className, combination }: { className?: string
     checkStock()
   }, [combination?.id])
 
-  const disabled = !hasAnyAvailable || !combination?.availableForSale || isPending
+  const unavailable = !combination?.availableForSale || !hasAnyAvailable
+
+  const disabled = unavailable || isPending
 
   return (
     <Button
@@ -57,7 +59,7 @@ export function AddToCartButton({ className, combination }: { className?: string
       isLoading={isPending}
       disabled={isPending || disabled}
     >
-      Add to Cart
+      {unavailable ? "Out of stock" : isPending ? "Adding to cart" : "Add to Cart"}
     </Button>
   )
 }

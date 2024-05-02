@@ -1,5 +1,5 @@
-import { format } from "date-fns/format"
 import { getAllPages, getPage } from "app/actions/page.actions"
+import { format } from "date-fns/format"
 
 export const revalidate = 3600
 export const dynamic = "force-static"

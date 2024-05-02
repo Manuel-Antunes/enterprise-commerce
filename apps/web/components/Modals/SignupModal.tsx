@@ -1,16 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { getCurrentUser, signupUser } from "app/actions/user.actions"
+import { getCurrentUser, loginUser, signupUser } from "app/actions/user.actions"
 import { Button } from "components/Button/Button"
 import { DialogFooter } from "components/Dialog/Dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "components/Form/Form"
 import { GenericModal } from "components/GenericModal/GenericModal"
 import { Input } from "components/Input/Input"
 import { Logo } from "components/Logo/Logo"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { useModalStore } from "stores/modalStore"
 import { useUserStore } from "stores/userStore"
+import { z } from "zod"
 
 const passwordRegexp = new RegExp(/(?=.*\d)(?=.*\W)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/)
 
@@ -32,16 +33,19 @@ export function SignupModal() {
     resolver: zodResolver(formSchema),
   })
 
+  const router = useRouter()
+
   async function onSubmit(payload: z.infer<typeof formSchema>) {
     const { email, password } = payload
     const user = await signupUser({ email, password })
-
+    await loginUser({ email, password })
     if (user) {
       const currentUser = await getCurrentUser()
       currentUser && setUser(currentUser)
 
       closeModal("signup")
-      toast.success("You have successfully signed up! You can now log in.")
+      toast.success("You have successfully signed up!")
+      router.push('/settings')
       return
     }
 

@@ -1,9 +1,9 @@
 "use server"
 
-import { revalidateTag, unstable_cache } from "next/cache"
-import { cookies } from "next/headers"
 import { storefrontClient } from "clients/storefrontClient"
 import { COOKIE_CART_ID, TAGS } from "constants/index"
+import { revalidateTag, unstable_cache } from "next/cache"
+import { cookies } from "next/headers"
 import { isDemoMode } from "utils/demoUtils"
 
 export const getCart = unstable_cache(async (cartId: string) => storefrontClient.getCart(cartId), [TAGS.CART], { revalidate: 60 * 15, tags: [TAGS.CART] })
@@ -27,7 +27,7 @@ export async function addCartItem(prevState: any, variantId: string) {
 
   const itemAvailability = await getItemAvailability(cartId, variantId)
 
-  if (!itemAvailability || itemAvailability.inCartQuantity >= itemAvailability.inStockQuantity)
+  if (!itemAvailability || itemAvailability.inCartQuantity >= itemAvailability.inStockQuantity || itemAvailability.inCartQuantity === 0)
     return {
       ok: false,
       message: "This product is out of stock",
@@ -73,7 +73,7 @@ export async function updateItemQuantity(prevState: any, payload: { itemId: stri
   }
 
   const itemAvailability = await getItemAvailability(cartId, variantId)
-  if (!itemAvailability || itemAvailability.inCartQuantity >= itemAvailability.inStockQuantity)
+  if (!itemAvailability || itemAvailability.inCartQuantity >= itemAvailability.inStockQuantity || itemAvailability.inCartQuantity === 0)
     return {
       ok: false,
       message: "This product is out of stock",

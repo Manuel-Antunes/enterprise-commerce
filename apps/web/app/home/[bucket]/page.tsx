@@ -1,10 +1,10 @@
-import { Suspense } from "react"
+import { AnnouncementBar } from "components/AnnouncementBar/AnnouncementBar"
 import { BUCKETS } from "constants/index"
+import { Suspense } from "react"
 import { BestOffersSection } from "views/Homepage/BestOffersSection"
 import { CarouselSectionSkeleton } from "views/Homepage/CarouselSection"
 import { CategoriesSection, CategoriesSectionSkeleton } from "views/Homepage/CategoriesSection"
 import { EverythingUnderSection } from "views/Homepage/EverythingUnderSection"
-import { AnnouncementBar } from "components/AnnouncementBar/AnnouncementBar"
 import { HeroSection } from "views/Homepage/HeroSection"
 
 export const revalidate = 3600

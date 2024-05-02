@@ -44,7 +44,6 @@ export function hasValidOption(variants: PlatformVariant[] | null | undefined, o
 
 export function createOptionfulUrl(originalUrl: string, size: string | null | undefined, color: string | null | undefined) {
   let urlWithoutParams = removeOptionsFromUrl(originalUrl)
-
   const newSizeParam = size ? `-size_${size}` : ""
   const newColorParam = color ? `-color_${color}` : ""
 

@@ -2,10 +2,10 @@ import { PlatformProduct } from "@enterprise-commerce/core/platform/types"
 import { meilisearch } from "clients/meilisearch"
 import { Carousel, CarouselContent } from "components/Carousel/Carousel"
 import { ProductCard } from "components/ProductCard/ProductCard"
-import { unstable_cache } from "next/cache"
-import { ComparisonOperators, FilterBuilder } from "utils/filterBuilder"
 import { MEILISEARCH_INDEX } from "constants/index"
+import { unstable_cache } from "next/cache"
 import { getDemoProducts, isDemoMode } from "utils/demoUtils"
+import { ComparisonOperators, FilterBuilder } from "utils/filterBuilder"
 
 interface SimilarProductsSectionProps {
   slug: string
@@ -36,15 +36,24 @@ const getSimilarProducts = unstable_cache(
     if (isDemoMode()) return getDemoProducts().hits.slice(0, limit)
 
     const index = await meilisearch?.getIndex<PlatformProduct>(MEILISEARCH_INDEX)
-    const similarSearchResults = await index.search(handle, { matchingStrategy: "last", limit, hybrid: { semanticRatio: 1 } })
+    const similarSearchResults = await index.search(handle, { matchingStrategy: "last", limit, hybrid: { semanticRatio: 1 } }).catch(
+      (error) => {
+        console.log('error', error)
+        return { hits: [] }
+      }
+    )
 
     let collectionSearchResults = { hits: [] }
     if (similarSearchResults.hits.length < limit) {
-      collectionSearchResults = await index.search("", {
-        matchingStrategy: "last",
-        limit: limit - similarSearchResults.hits.length,
-        filter: collection ? new FilterBuilder().where("collections.title", ComparisonOperators.Equal, collection).build() : undefined,
-      })
+      try {
+        collectionSearchResults = await index.search("", {
+          matchingStrategy: "last",
+          limit: limit - similarSearchResults.hits.length,
+          filter: collection ? new FilterBuilder().where("collections.title", ComparisonOperators.Equal, collection).build() : undefined,
+        })
+      } catch (error) {
+        console.log('error', error)
+      }
     }
 
     return [...similarSearchResults.hits, ...collectionSearchResults.hits]

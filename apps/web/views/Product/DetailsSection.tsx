@@ -3,9 +3,9 @@
 import { PlatformProduct } from "@enterprise-commerce/core/platform/types"
 import { useIntersectionObserver } from "@uidotdev/usehooks"
 import dynamic from "next/dynamic"
+import { useRef } from "react"
 import { getCombination, getOptionsFromUrl } from "utils/productOptionsUtils"
 import { AddToCartButtonSkeleton, FaqSectionSkeleton } from "./PageSkeleton"
-import { useRef } from "react"
 
 const AddToCartButton = dynamic(() => import("views/Product/AddToCartButton").then((module) => module.AddToCartButton), { loading: AddToCartButtonSkeleton })
 const FaqSection = dynamic(() => import("views/Product/FaqSection").then((module) => module.FaqSection), { loading: FaqSectionSkeleton })

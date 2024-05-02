@@ -1,8 +1,8 @@
 import { PlatformProduct } from "@enterprise-commerce/core/platform/types"
-import { notFound } from "next/navigation"
-import { Suspense } from "react"
 import { getProduct } from "app/actions/product.actions"
 import { Breadcrumbs } from "components/Breadcrumbs/Breadcrumbs"
+import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
 import { getCombination, getOptionsFromUrl, hasValidOption, removeOptionsFromUrl } from "utils/productOptionsUtils"
 import { BackButton } from "views/Product/BackButton"
@@ -13,8 +13,8 @@ import { InfoSection } from "views/Product/InfoSection"
 import { PageSkeleton } from "views/Product/PageSkeleton"
 import { SimilarProductsSection } from "views/Product/SimilarProductsSection"
 import { SimilarProductsSectionSkeleton } from "views/Product/SimilarProductsSectionSkeleton"
-import { generateJsonLd } from "./metadata"
 import { VariantsSection } from "views/Product/VariantsSection"
+import { generateJsonLd } from "./metadata"
 
 export const revalidate = 3600
 

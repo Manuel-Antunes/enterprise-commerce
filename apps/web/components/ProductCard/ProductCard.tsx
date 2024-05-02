@@ -2,7 +2,7 @@ import { PlatformProduct } from "@enterprise-commerce/core/platform/types"
 import Image from "next/image"
 import Link from "next/link"
 import { cn } from "utils/cn"
-import { mapCurrencyToSign, type CurrencyType } from "utils/mapCurrencyToSign"
+import { mapCurrencyToSign } from "utils/mapCurrencyToSign"
 import { QuickAdd } from "./QuickAdd"
 
 interface ProductCardProps extends Pick<PlatformProduct, "variants" | "handle" | "images" | "title" | "featuredImage" | "minPrice"> {
@@ -38,7 +38,7 @@ export function ProductCard(props: ProductCardProps) {
           <div className="line-clamp-2 text-base tracking-tight md:text-xl">{props.title}</div>
           {!!variant && (
             <p className="text-base font-semibold tracking-tight text-black md:text-lg">
-              From {props.minPrice.toFixed(2) + mapCurrencyToSign(variant.currencyCode as CurrencyType)}
+              From {props.minPrice.toFixed(2) + mapCurrencyToSign(variant.currencyCode as any)}
             </p>
           )}
         </div>

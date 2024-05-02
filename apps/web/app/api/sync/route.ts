@@ -1,11 +1,11 @@
 import { PlatformImage, PlatformProduct } from "@enterprise-commerce/core/platform/types"
-import { FailedAttemptError } from "p-retry"
-import { createHmac } from "crypto"
 import { meilisearch } from "clients/meilisearch"
 import { replicate } from "clients/replicate"
 import { storefrontClient } from "clients/storefrontClient"
 import { MEILISEARCH_INDEX } from "constants/index"
+import { createHmac } from "crypto"
 import { env } from "env.mjs"
+import { FailedAttemptError } from "p-retry"
 import { Root } from "shopify-webhooks"
 
 export async function POST(req: Request) {
@@ -22,6 +22,8 @@ export async function POST(req: Request) {
   }
 
   const { product, metadata } = JSON.parse(rawPayload) as Root
+
+  console.log(rawPayload)
 
   let index = await getMeilisearchIndex(MEILISEARCH_INDEX)
 
